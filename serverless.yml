@@ -8,7 +8,7 @@ provider:
     - Effect: Allow
       Action:
         - dynamodb:PutItem
-      Resource: "arn:aws:dynamodb:us-east-2:136618031607:table/todos"
+      Resource: "arn:aws:dynamodb:us-east-2:<id>:table/todos"
 
 functions:
   helloWorld:
