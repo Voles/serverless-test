@@ -1,0 +1,48 @@
+service: test-api
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  region: us-east-2
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:PutItem
+      Resource: "arn:aws:dynamodb:us-east-2:136618031607:table/todos"
+
+functions:
+  helloWorld:
+    handler: handler.run
+
+  asyncTask:
+    handler: handler.asyncTask
+
+  miniApi:
+    handler: miniApi.run
+    events:
+      - http:
+          path: /
+          method: get
+
+  createTodo:
+    handler: create.run
+    events:
+      - http:
+          path: todos
+          method: post
+
+resources:
+  Resources:
+    TodosTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: todos
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1  
